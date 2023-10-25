@@ -1,0 +1,33 @@
+{
+    "debug": true,
+    "device_id": "## Please set your device ID ##",
+    "api_url": "https://api.clip-viewer-lite.com",
+    "headers": {
+        "X-API-Key": "## Please set your API key ##"
+    },
+    "body": {
+        "username": "## Please set your Username ##",
+        "password": "## Please set your Password ##"
+    },
+    "data_selection": {
+        "ALL": true,
+        "temperature": false,
+        "humidity": false,
+        "carbonDioxide": false,
+        "xAcceleration": false,
+        "yAcceleration": false,
+        "zAcceleration": false,
+        "pitchGyro": false,
+        "rollGyro": false,
+        "yawGyro": false,
+        "airPressure": false,
+        "pressure": false,
+        "illuminance": false,
+        "distance": false,
+        "voltageInfo": false,
+        "error": false,
+        "chNumber": false,
+        "trigger1": false,
+        "trigger2": false
+    }
+}
