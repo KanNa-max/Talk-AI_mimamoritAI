@@ -2,6 +2,7 @@
 #define voice_rec_h
 
 #define MP3_FILE_NAME "Sound.mp3"
+#define MAX_PLAY_TIME 10  // seconds
 
 #define MP3_VOLUME -160
 /*The "volume" parameter allows you to adjust the volume within a range of -
@@ -14,9 +15,8 @@
 // extern SDClass theSD;
 // extern AudioClass *theAudio;
 // extern File myFile;
-extern bool ErrEnd;
+// extern bool ErrEnd;
 
-void audio_attention_cb(const ErrorAttentionParam *atprm);
 void setupAudioPlayer();
 void loopAudioPlayer();
 
