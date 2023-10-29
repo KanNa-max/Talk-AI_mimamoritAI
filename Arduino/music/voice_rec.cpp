@@ -99,7 +99,7 @@ void init_theAudio() {
     }
 }
 
-void open_VoiceFile() {
+void open_VoiceFile(char* mp3_file_path) {
     check_sd_card();
 
     /* Open file placed on SD card */
@@ -123,9 +123,9 @@ void open_VoiceFile() {
     printf("Seccess: open_VoiceFile()\n");
 }
 
-void init_VoiceRec() {
-    init_rheAudio();
-    open_VoiceFile();
+void init_VoiceRec(char* mp3_file_path) {
+    init_theAudio();
+    open_VoiceFile(mp3_file_path);
 
     /* Main volume set to -16.0 dB */
     theAudio->setVolume(MP3_VOLUME);
@@ -139,6 +139,7 @@ void stop_player() {
     theAudio->end();
 }
 
+// static const int32_t stop_time = MAX_PLAY_TIME;
 void play_Voice(int stop_time) {
     int init_eratime = get_EraTime();
     while (get_EraTime() - init_eratime < stop_time) {
@@ -164,3 +165,10 @@ void play_Voice(int stop_time) {
     printf("Main player Stop Time!\n");
     stop_player();
 }
+
+static const int32_t recoding_time = RECORD_TIME;
+static const int32_t recoding_bitrate = 96000;
+static const int32_t recoding_byte_per_second = (recoding_bitrate / 8);  // Bytes per second
+static const int32_t recoding_size = recoding_byte_per_second * recoding_time;  // Total recording size
+
+
