@@ -1,4 +1,4 @@
-#ifdef voice_rec_h
+#ifndef voice_rec_h
 #define voice_rec_h
 
 #define MP3_FILE_NAME "Sound.mp3"
@@ -15,7 +15,7 @@
 */
 
 // 曜日を表す列挙型
-extern enum status_voice {
+enum status_voice {
     PLAY,    // 0
     REC,    // 1
     ELSE,   // 2
@@ -26,7 +26,7 @@ extern enum status_voice {
 // extern File myFile;
 // extern bool ErrEnd;
 
-void setupAudioPlayer();
-void loopAudioPlayer();
+void init_VoiceRec(char* mp3_file_path);
+void play_Voice(int stop_time);
 
 #endif  // voice_rec_h

@@ -3,11 +3,13 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "audio_player.h"
+#include "voice_rec.h"
+
+
 
 #define DEBUG
 
-bool is_debug() {
+bool is_debug(void) {
 #ifdef DEBUG
     return true;
 #endif
@@ -19,7 +21,7 @@ void print_debug(const char *str) {
     }
 }
 
-int get_EraTime() {
+int get_EraTime(void) {
     time_t now = time(NULL);
     struct tm *pnow = localtime(&now);
     int EraTime = pnow->tm_hour * 100 + pnow->tm_min + pnow->tm_sec;
@@ -41,7 +43,7 @@ static void audio_attention_cb(const ErrorAttentionParam *atprm) {
     }
 }
 
-void check_sd_card() {
+void check_sd_card(void) {
     /* Initialize SD */
     while (!theSD.begin()) {
         /* wait until SD card is mounted. */
@@ -49,7 +51,7 @@ void check_sd_card() {
     }
 }
 
-void init_theAudio() {
+void init_theAudio(void) {
     // start audio system
     theAudio = AudioClass::getInstance();
     theAudio->begin(audio_attention_cb);
@@ -134,7 +136,7 @@ void init_VoiceRec(char* mp3_file_path) {
 
 void stop_player() {
     theAudio->stopPlayer(AudioClass::Player0);
-    myFile.close();
+    // myFile.close();
     theAudio->setReadyMode();
     theAudio->end();
 }
@@ -166,9 +168,11 @@ void play_Voice(int stop_time) {
     stop_player();
 }
 
-static const int32_t recoding_time = RECORD_TIME;
-static const int32_t recoding_bitrate = 96000;
-static const int32_t recoding_byte_per_second = (recoding_bitrate / 8);  // Bytes per second
-static const int32_t recoding_size = recoding_byte_per_second * recoding_time;  // Total recording size
+
+/**REC**/
+// static const int32_t recoding_time = RECORD_TIME;
+// static const int32_t recoding_bitrate = 96000;
+// static const int32_t recoding_byte_per_second = (recoding_bitrate / 8);  // Bytes per second
+// static const int32_t recoding_size = recoding_byte_per_second * recoding_time;  // Total recording size
 
 

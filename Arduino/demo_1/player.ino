@@ -27,8 +27,6 @@ File myFile;
 
 bool ErrEnd = false;
 
-#define MP3_FILE_NAME "Sound.mp3"
-
 /**
  * @brief Audio attention callback
  *
@@ -95,7 +93,7 @@ void setup() {
     }
 
     /* Open file placed on SD card */
-    myFile = theSD.open(MP3_FILE_NAME);
+    myFile = theSD.open("Sound.mp3");
 
     /* Verify file open */
     if (!myFile) {
