@@ -1,9 +1,5 @@
-#include <stdint.h>
-#include <Arduino.h>
-#include <EltresAddonBoard.h>
 
-
-#include "check_gnss.h"
+#include "clip_eltres.h"
 
 /* Program Status */
 int program_sts = PROGRAM_STS_INIT;
@@ -131,85 +127,81 @@ void init_eltres(void) {
   }
 }
 
-void send_eltres(void) {
-  uint32_t gnss_time;
-  int32_t remaining;
-  bool temp_f = true;
-  while (temp_f) {
-    switch (program_sts) {
-      /* プログラム内部状態：初期状態 */
-      case PROGRAM_STS_RUNNING:
-        /*  GNSS電波受信タイムアウト（GNSS受信エラー） */
-        if (gnss_recevie_timeout) {
-          uint64_t now_time =
-            millis();  // 実行してからの経過時間をミリ秒で取得
-          if ((now_time - last_change_blink_time) >= 1000) {
-            last_change_blink_time = now_time;
-          }
-        }
-        /* 送信直前通知時の処理, 送信ペイロードの設定*/
-        if (event_send_ready) {
-          event_send_ready = false;
-          send_count += 1;
-          setup_payload(input_payload);
-          EltresAddonBoard.set_payload(payload);
-        }
-        /* 次の送信に向けた準備 */
-        if (event_idle) {
-          event_idle = false;
-          program_sts = PROGRAM_STS_STOPPING;
-          Serial.println("stop sending.");
-          break;
+// void send_eltres(void) {
+//   uint32_t gnss_time;
+//   int32_t remaining;
+//   bool temp_f = true;
+//   while (temp_f) {
+//     switch (program_sts) {
+//       /* プログラム内部状態：初期状態 */
+//       case PROGRAM_STS_RUNNING:
+//         /*  GNSS電波受信タイムアウト（GNSS受信エラー） */
+//         if (gnss_recevie_timeout) {
+//           uint64_t now_time =
+//             millis();  // 実行してからの経過時間をミリ秒で取得
+//           if ((now_time - last_change_blink_time) >= 1000) {
+//             last_change_blink_time = now_time;
+//           }
+//         }
+//         /* 送信直前通知時の処理, 送信ペイロードの設定*/
+//         if (event_send_ready) {
+//           event_send_ready = false;
+//           send_count += 1;
+//           setup_payload(input_payload);
+//           EltresAddonBoard.set_payload(payload);
+//         }
+//         /* 次の送信に向けた準備 */
+//         if (event_idle) {
+//           event_idle = false;
 
-          // if (send_count > 2) {
-          //   // 規定回数
-          //   program_sts = PROGRAM_STS_STOPPING;
-          //   Serial.println("stop sending.");
-          //   break;
-          // }
-          // GNSS時刻(epoch秒)の取得
-          Serial.println("----------");
-          EltresAddonBoard.get_gnss_time(&gnss_time);
-          Serial.print("gnss time: ");
-          Serial.print(gnss_time);
-          Serial.println(" sec");
-          // 次送信までの残り時間の取得
-          EltresAddonBoard.get_remaing_time(&remaining);
-          Serial.print("remaining time: ");
-          Serial.print(remaining);
-          Serial.println(" sec");
-        }
-        /* ELTRES停止 */
-        if (false) {  // 終了条件(未設定)
-          program_sts = PROGRAM_STS_STOPPING;
-          Serial.println("stop sending.");
-          break;
-        }
-        break;
-      // ----------------------------------------
-      /* プログラム内部状態：終了処理中 */
-      case PROGRAM_STS_STOPPING:
-        // ELTRES停止処理(注意：この処理を行わないとELTRESが自動送信し続ける)
-        EltresAddonBoard.end();
-        program_sts = PROGRAM_STS_STOPPED;
-        break;
-      // ----------------------------------------
-      /* プログラム内部状態：終了 */
-      case PROGRAM_STS_STOPPED:
-        temp_f = false;
-        break;
-    }
-    delay(3000);
-    Serial.print("Loop");
-  }
-  Serial.print("end_Loop");
-}
+//           // if (send_count > 2) {
+//           //   // 規定回数
+//           //   program_sts = PROGRAM_STS_STOPPING;
+//           //   Serial.println("stop sending.");
+//           //   break;
+//           // }
+//           // GNSS時刻(epoch秒)の取得
+//           Serial.println("----------");
+//           EltresAddonBoard.get_gnss_time(&gnss_time);
+//           Serial.print("gnss time: ");
+//           Serial.print(gnss_time);
+//           Serial.println(" sec");
+//           // 次送信までの残り時間の取得
+//           EltresAddonBoard.get_remaing_time(&remaining);
+//           Serial.print("remaining time: ");
+//           Serial.print(remaining);
+//           Serial.println(" sec");
+//         }
+//         /* ELTRES停止 */
+//         if (false) {  // 終了条件(未設定)
+//           program_sts = PROGRAM_STS_STOPPING;
+//           Serial.println("stop sending.");
+//           break;
+//         }
+//         break;
+//       // ----------------------------------------
+//       /* プログラム内部状態：終了処理中 */
+//       case PROGRAM_STS_STOPPING:
+//         // ELTRES停止処理(注意：この処理を行わないとELTRESが自動送信し続ける)
+//         EltresAddonBoard.end();
+//         program_sts = PROGRAM_STS_STOPPED;
+//         break;
+//       // ----------------------------------------
+//       /* プログラム内部状態：終了 */
+//       case PROGRAM_STS_STOPPED:
+//         break;
+//     }
+//     delay(3000);
+//     Serial.print("Loop");
+//   }
+//   Serial.print("end_Loop");
+// }
 
 
 /**
  * @brief ペイロード設定
  */
-void setup_payload(Payload input_payload) {
+void setup_payload() {
   int ch_no = input_payload.ch_no;
   float trriger_1 = input_payload.trriger_1;
   float trriger_2 = input_payload.trriger_2;
