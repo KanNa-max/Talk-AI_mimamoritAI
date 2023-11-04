@@ -21,6 +21,7 @@ extern Payload input_payload;
 // void eltres_event_cb(eltres_board_event event);
 // void gga_event_cb(const eltres_board_gga_info *gga_info);
 // int get_gnss_time(void);
+/*setup(), もしくはELTRES通信停止後に再開したいときに呼び出し*/
 void init_eltres(void);
 // void send_eltres(void);
 void setup_payload(void);

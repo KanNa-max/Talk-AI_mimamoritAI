@@ -2,8 +2,13 @@
 #define _main_h
 
 enum mimamori_mode : int {
-    ELTRES_BOARD_SEND_MODE_1MIN,  // 1分間隔送信モード
-    ELTRES_BOARD_SEND_MODE_3MIN,  // 3分間隔送信モード
+    MIMAMORI_INIT,  // 初期状態
+    MIMAMORI_MONITOR,  // みまもり状態
+    MIMAMORI_CAMERA,  // カメラ撮影，推論
+    MIMAMORI_SEND2ELTRES,  //payloadの更新，ELTRES通信
+    MIMAMORI_ALARM,  // mp3音源の再生
+    MIMAMORI_ISVOICE,  // マイクから人の声が聞こえているかどうか
+    MIMAMORI_START,  // みまもり開始
 };
 
 #endif // _main_h

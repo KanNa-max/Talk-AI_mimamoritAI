@@ -1,11 +1,9 @@
 #include <Audio.h>
 #include <SDHCI.h>
 #include <stdio.h>
-#include <time.h>
+// #include <time.h>
 
 #include "voice_rec.h"
-
-
 
 #define DEBUG
 
@@ -21,12 +19,12 @@ void print_debug(const char *str) {
     }
 }
 
-int get_EraTime(void) {
-    time_t now = time(NULL);
-    struct tm *pnow = localtime(&now);
-    int EraTime = pnow->tm_hour * 100 + pnow->tm_min + pnow->tm_sec;
-    return EraTime;
-}
+// int get_EraTime(void) {
+//     time_t now = time(NULL);
+//     struct tm *pnow = localtime(&now);
+//     int EraTime = pnow->tm_hour * 100 + pnow->tm_min + pnow->tm_sec;
+//     return EraTime;
+// }
 
 SDClass theSD;
 AudioClass *theAudio;
@@ -43,7 +41,7 @@ static void audio_attention_cb(const ErrorAttentionParam *atprm) {
     }
 }
 
-void check_sd_card(void) {
+void init_SDcard(void) {
     /* Initialize SD */
     while (!theSD.begin()) {
         /* wait until SD card is mounted. */
@@ -101,11 +99,9 @@ void init_theAudio(void) {
     }
 }
 
-void open_VoiceFile(char* mp3_file_path) {
-    check_sd_card();
-
+void open_VoiceFile(char *mp3_file_path) {
     /* Open file placed on SD card */
-    myFile = theSD.open(MP3_FILE_NAME);
+    myFile = theSD.open(mp3_file_path);
 
     /* Verify file open */
     if (!myFile) {
@@ -125,12 +121,12 @@ void open_VoiceFile(char* mp3_file_path) {
     printf("Seccess: open_VoiceFile()\n");
 }
 
-void init_VoiceRec(char* mp3_file_path) {
+void init_VoicePlay(char *mp3_file_path, int volume) {
     init_theAudio();
     open_VoiceFile(mp3_file_path);
 
     /* Main volume set to -16.0 dB */
-    theAudio->setVolume(MP3_VOLUME);
+    theAudio->setVolume(volume);
     theAudio->startPlayer(AudioClass::Player0);
 }
 
@@ -143,10 +139,12 @@ void stop_player() {
 
 // static const int32_t stop_time = MAX_PLAY_TIME;
 void play_Voice(int stop_time) {
-    int init_eratime = get_EraTime();
-    while (get_EraTime() - init_eratime < stop_time) {
+    uint64_t last_change_blink_time = millis();
+    uint64_t now_time = millis();  // 実行してからの経過時間をミリ秒で取得
+    while ((now_time - last_change_blink_time) < stop_time) {
         /* Send new frames to decode in a loop until file ends */
         int err = theAudio->writeFrames(AudioClass::Player0, myFile);
+        now_time = millis();
 
         /*  Tell when player file ends */
         if (err == AUDIOLIB_ECODE_FILEEND) {
@@ -168,11 +166,9 @@ void play_Voice(int stop_time) {
     stop_player();
 }
 
-
 /**REC**/
 // static const int32_t recoding_time = RECORD_TIME;
 // static const int32_t recoding_bitrate = 96000;
-// static const int32_t recoding_byte_per_second = (recoding_bitrate / 8);  // Bytes per second
-// static const int32_t recoding_size = recoding_byte_per_second * recoding_time;  // Total recording size
-
-
+// static const int32_t recoding_byte_per_second = (recoding_bitrate / 8);  //
+// Bytes per second static const int32_t recoding_size =
+// recoding_byte_per_second * recoding_time;  // Total recording size

@@ -3,7 +3,7 @@
 
 #define MP3_FILE_NAME "Sound.mp3"
 #define RECORD_FILE_NAME "Sound_record.mp3"
-#define MAX_PLAY_TIME 10  // seconds
+#define MAX_PLAY_TIME 10*1000  // miriseconds
 #define RECORD_TIME 5     // seconds
 
 #define MP3_VOLUME -160
@@ -14,7 +14,6 @@
     the actual volume will be 1.5 dB.
 */
 
-// 曜日を表す列挙型
 enum status_voice {
     PLAY,    // 0
     REC,    // 1
@@ -25,8 +24,9 @@ enum status_voice {
 // extern AudioClass *theAudio;
 // extern File myFile;
 // extern bool ErrEnd;
-
-void init_VoiceRec(char* mp3_file_path);
+void init_SDcard();
+void init_theAudio();
+void init_VoicePlay(char* mp3_file_path, int volume);  //include: init_theAudio(), open_VoiceFile(char* mp3_file_path)
 void play_Voice(int stop_time);
 
 #endif  // voice_rec_h

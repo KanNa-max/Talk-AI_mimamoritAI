@@ -108,9 +108,6 @@ void gga_event_cb(const eltres_board_gga_info *gga_info) {
  * @brief プログラム終了処理
  */
 void init_eltres(void) {
-  /* init SerialMonitor */
-  Serial.begin(115200);
-
   /* ELTRES: boot_process */
   eltres_board_result ret = EltresAddonBoard.begin(
     ELTRES_BOARD_SEND_MODE_1MIN, eltres_event_cb, gga_event_cb);
