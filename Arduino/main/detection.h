@@ -66,6 +66,9 @@ void init_camera();  // Add byHira
 
 void detection(int lim_sleep);
 void calibration();
+// detec()-> awake:0 sleep:1を返す(f_calibration内)
+// 引数にしきい値（0~1）
+int detec(int thres);
 
 void putStringOnLcd(String str, int color);
 void drawBox(uint16_t* imgBuf);

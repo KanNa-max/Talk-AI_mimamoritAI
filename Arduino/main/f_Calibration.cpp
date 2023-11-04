@@ -52,7 +52,7 @@ void init_camera() {
 }
 
 // detec()-> awake:0 sleep:1を返す
-int detec() {
+int detec(int thres) {
     CamErr cam_err;
     CamImage coverted;
     ;
@@ -108,7 +108,7 @@ int detec() {
             float value = output[0];
             // 結果表示
             // Serial.print("[recognition] door is ");
-            if (value < 0.5) {
+            if (value < thres) {
                 // Serial.print("awake.");
                 awake_count = 1;
             } else {
@@ -148,7 +148,32 @@ void calibration() {
 
     Serial.println("Calibration start!");
 
-    // 背景
+
+    // 顔（瞳）検出
+
+    Serial.println("顔を映してください");
+    count = 0;
+    /* キューを初期化 */
+    initQueue(&queue);
+
+    while (count < 5) {
+        // キューに11以上入っていたらデキューする
+        if (getQueueSize(&queue) == MAX_NUM) {
+            dequeue(&queue);
+        }
+        if (detec(0.5) == 1) {
+            enqueue(&queue, 1);
+        } else {
+            enqueue(&queue, 0);
+        }
+
+        count = countInQueue(&queue, 0);
+        Serial.print(count);
+        Serial.println("/5");
+    }
+    Serial.println("done!");
+
+        // 背景
     Serial.println("背景を映してください");
 
     /* キューを初期化 */
@@ -156,10 +181,10 @@ void calibration() {
 
     while (count < 5) {
         // キューに11以上入っていたらデキューする
-        if (getQueueSize(&queue) == 10) {
+        if (getQueueSize(&queue) == MAX_NUM) {
             dequeue(&queue);
         }
-        if (detec() == 1) {
+        if (detec(0.5) == 1) {
             enqueue(&queue, 1);
         } else {
             enqueue(&queue, 0);
@@ -172,29 +197,7 @@ void calibration() {
     Serial.println("done!");
     //
 
-    // 顔（瞳）検出
-
-    Serial.println("顔を映してください");
-    count = 0;
-    /* キューを初期化 */
-    initQueue(&queue);
-
-    while (count < 5) {
-        // キューに11以上入っていたらデキューする
-        if (getQueueSize(&queue) == 10) {
-            dequeue(&queue);
-        }
-        if (detec() == 1) {
-            enqueue(&queue, 1);
-        } else {
-            enqueue(&queue, 0);
-        }
-
-        count = countInQueue(&queue, 0);
-        Serial.print(count);
-        Serial.println("/5");
-    }
-    Serial.println("done!");
+    
 
     Serial.println("Calibration end!");
 }

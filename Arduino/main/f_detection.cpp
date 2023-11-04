@@ -222,7 +222,7 @@ void detection(int lim_sleep) {
       }
     }
         // キューに11以上入っていたらデキューする
-        if(getQueueSize(&queue) == 10){
+        if(getQueueSize(&queue) == MAX_NUM){
           dequeue(&queue);
         }
     if (awake_count == 1) {
