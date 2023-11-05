@@ -1,7 +1,10 @@
 #ifndef _clip_eltres_h
 #define _clip_eltres_h
 #include <stdint.h>
-#include <Arduino.h>
+// #ifndef _arduino_h
+// #define _arduino_h
+// #include <Arduino.h>
+// #endif
 #include <EltresAddonBoard.h>
 
 /* Program Status */
@@ -32,6 +35,7 @@ extern int program_sts;
 extern bool gnss_recevie_timeout;
 extern bool event_send_ready;
 extern bool event_idle;
+
 
 extern uint64_t last_change_blink_time;
 extern uint8_t payload[16];

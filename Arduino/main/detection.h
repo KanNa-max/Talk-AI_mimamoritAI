@@ -13,13 +13,19 @@ detection()と違い,count数は5で固定している（変更可）。
 #define _detection_h
 #include <SDHCI.h>
 #include <DNNRT.h>
+#ifndef _stdio_h
+#define _stdio_h
 #include <stdio.h>
+#endif
 #include <Camera.h>
 
 //キューに格納できるデータ数+1
 #define MAX_NUM (10+1)
+#define queue_size 10
 //sleepのカウント数
 #define sleepNumber 5
+
+#define detec_level 0.7
 
 // AIモデルへの入力サイズ
 #define INPUT_WIDTH             (28)
@@ -64,11 +70,12 @@ extern Adafruit_ILI9341 tft;
 void init_AImodel();  // Add byHira
 void init_camera();  // Add byHira
 
-void detection(int lim_sleep);
+
+void detection();
 void calibration();
 // detec()-> awake:0 sleep:1を返す(f_calibration内)
-// 引数にしきい値（0~1）
-int detec(int thres);
+
+int detec();
 
 void putStringOnLcd(String str, int color);
 void drawBox(uint16_t* imgBuf);
@@ -84,11 +91,20 @@ typedef struct QUEUE {
     int data[MAX_NUM];
 } QUEUE_T;
 
+// キューの宣言
+extern QUEUE_T queue;
 
+// キューの初期化 例initQueue(&queue);
 void initQueue(QUEUE_T *queue);
+
 void enqueue(QUEUE_T *queue, int input);
 void dequeue(QUEUE_T *queue);
 int getQueueSize(const QUEUE_T *queue);
+
+// キューの中にtargetが何個あるかを返す 例）if(countInQueue(&queue, 1) > 5); awake:0 sleep:1
 int countInQueue(const QUEUE_T *queue, int target);
+
+void preview_queue(const QUEUE_T *queue);
+
 
 #endif  // _detection_h

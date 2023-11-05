@@ -1,5 +1,6 @@
 #include "detection.h"
 
+
 // 　DNNRTクラスのインスタンス
 DNNRT dnnrt;
 // SDカードクラスのインスタンス
@@ -52,15 +53,14 @@ void init_camera() {
 }
 
 // detec()-> awake:0 sleep:1を返す
-int detec(int thres) {
+int detec() {
     CamErr cam_err;
     CamImage coverted;
-    ;
+    
     String gStrResult;
     int awake_count = 0;
 
     // カメラ撮影
-
     CamImage camImage = theCamera.takePicture();
     if (!camImage.isAvailable()) {
         // 撮影失敗
@@ -108,14 +108,14 @@ int detec(int thres) {
             float value = output[0];
             // 結果表示
             // Serial.print("[recognition] door is ");
-            if (value < thres) {
+            if (value < detec_level) {
                 // Serial.print("awake.");
                 awake_count = 1;
             } else {
                 // Serial.print("sleep. ");
             }
-            //      Serial.print(" ( value: ");
-            //      Serial.print(value);
+                  //Serial.print("value: ");
+                 //Serial.println(value);
             //      Serial.println(")");
         }
     }
@@ -141,10 +141,11 @@ int detec(int thres) {
 
 // detec()-> awake:0 sleep:1を返す
 void calibration() {
-    QUEUE_T queue;
+
     int count = 0;
 
     int results;
+
 
     Serial.println("Calibration start!");
 
@@ -152,16 +153,16 @@ void calibration() {
     // 顔（瞳）検出
 
     Serial.println("顔を映してください");
-    count = 0;
+   
     /* キューを初期化 */
     initQueue(&queue);
-
     while (count < 5) {
+        //Serial.println(getQueueSize(&queue));
         // キューに11以上入っていたらデキューする
-        if (getQueueSize(&queue) == MAX_NUM) {
+        if (getQueueSize(&queue) == queue_size) {
             dequeue(&queue);
         }
-        if (detec(0.5) == 1) {
+        if (detec() == 1) {
             enqueue(&queue, 1);
         } else {
             enqueue(&queue, 0);
@@ -170,6 +171,8 @@ void calibration() {
         count = countInQueue(&queue, 0);
         Serial.print(count);
         Serial.println("/5");
+
+        preview_queue(&queue);
     }
     Serial.println("done!");
 
@@ -179,12 +182,13 @@ void calibration() {
     /* キューを初期化 */
     initQueue(&queue);
 
+    count = 0;
     while (count < 5) {
         // キューに11以上入っていたらデキューする
-        if (getQueueSize(&queue) == MAX_NUM) {
+        if (getQueueSize(&queue) == queue_size) {
             dequeue(&queue);
         }
-        if (detec(0.5) == 1) {
+        if (detec() == 1) {
             enqueue(&queue, 1);
         } else {
             enqueue(&queue, 0);
@@ -193,11 +197,37 @@ void calibration() {
         count = countInQueue(&queue, 1);
         Serial.print(count);
         Serial.println("/5");
+        preview_queue(&queue);
     }
     Serial.println("done!");
     //
 
+    Serial.println("もう一度顔を映してください");
+
+    /* キューを初期化 */
+    initQueue(&queue);
     
+    count = 0;
+    while (count < 2) {
+        // キューに11以上入っていたらデキューする
+        if (getQueueSize(&queue) == queue_size) {
+            dequeue(&queue);
+        }
+        if (detec() == 1) {
+            enqueue(&queue, 1);
+        } else {
+            enqueue(&queue, 0);
+        }
+
+        count = countInQueue(&queue, 0);
+        Serial.print(count);
+        Serial.println("/2");
+        preview_queue(&queue);
+    }
+    Serial.println("done!");
+    
+    /* キューを初期化 */
+    initQueue(&queue);
 
     Serial.println("Calibration end!");
 }

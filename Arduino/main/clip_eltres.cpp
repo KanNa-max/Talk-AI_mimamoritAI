@@ -1,4 +1,7 @@
-
+#ifndef _arduino_h
+#define _arduino_h
+#include <Arduino.h>
+#endif
 #include "clip_eltres.h"
 
 /* Program Status */
