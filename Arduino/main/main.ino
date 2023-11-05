@@ -10,8 +10,7 @@
 #include "clip_eltres.h"
 #include "detection.h"
 #include "main.h"
-#include "sounddetector.h"
-
+#include "voice_rec.h"
 
 const int BUTTON_1 = 4;  // SW4
 const int BUTTON_2 = 5;  // SW5
@@ -44,8 +43,10 @@ int sts_ch = STATE_CH_AWAKE;
 
 uint64_t startTime = 0;
 void main_mimamori() {
-    Serial.print("[main_mimamori]");
-    Serial.println("This is main_mimamori.");
+    Serial.print("[main_mimamori] STS:");
+    Serial.print(mimamori_sts);
+    Serial.print(", CH:");
+    Serial.println(sts_ch);
     // input_payload.ch_no = temp_no % 255;
     // input_payload.trriger_1 = 3.14;
     // input_payload.trriger_2 = 1.414;
@@ -53,8 +54,16 @@ void main_mimamori() {
     switch (mimamori_sts) {
         case MIMAMORI_START:
             /* code */
+            init_VoicePlay("MUSIC/zunda_02.mp3", 100);
+            play_Voice(MAX_PLAY_TIME);
+            Serial.println("stop: second play_voice()");
+            delay(1000);
             calibration();
             mimamori_sts = MIMAMORI_MONITOR;
+            init_VoicePlay("MUSIC/zunda_04.mp3", 100);
+            play_Voice(MAX_PLAY_TIME);
+            Serial.println("stop: second play_voice()");
+            delay(1000);
             break;
         case MIMAMORI_MONITOR:
             /* code */
@@ -79,24 +88,31 @@ void main_mimamori() {
             /* code */
 
             /* Wait for reaction for 10 seconds */
-            startTime = millis();
+            // startTime = millis();
             if (millis() - startTime < 10 * 1000) {
                 sts_ch = STATE_CH_CHECK;
                 Serial.println("[mimamori]Waiting for your action.");
-                // TODO (がんばてね音声再生)
+                // TODO (みてる音声再生)
+                init_VoicePlay("MUSIC/zunda_01.mp3", 100);
+                play_Voice(MAX_PLAY_TIME);
+                Serial.println("stop: second play_voice()");
+                delay(1000);
                 is_sw();
                 delay(100);
                 if (sw1_sts) {  // reaction(pushed sw1)
                     Serial.println("[mimamori]sw1_sts: pushed");
+                    init_VoicePlay("MUSIC/zunda_03.mp3", 100);
+                    play_Voice(MAX_PLAY_TIME);
+                    Serial.println("stop: second play_voice()");
+                    delay(1000);
                     mimamori_sts = MIMAMORI_MONITOR;
-                    break;
                 }
             }
             // endloop
             else {
                 mimamori_sts = MIMAMORI_ALARM;
-                break;
             }
+            break;
 
         case MIMAMORI_ALARM:
             Serial.println("[mimamori]sts: MIMAMORI_ALARM");
@@ -105,14 +121,36 @@ void main_mimamori() {
             Serial.println("[mimamori]Waiting for your action..");
             // Loop'(反応ない)
             // TODO (アラーム音声再生)
+            init_VoicePlay("MUSIC/zunda_01.mp3", 100);
+            play_Voice(MAX_PLAY_TIME);
+            Serial.println("stop: second play_voice()");
+            delay(1000);
             is_sw();
             delay(100);
             if (sw1_sts) {  // reaction(pushed sw1)
                 Serial.println("[mimamori]sw1_sts: pushed");
+                init_VoicePlay("MUSIC/zunda_03.mp3", 100);
+                play_Voice(MAX_PLAY_TIME);
+                Serial.println("stop: second play_voice()");
+                delay(1000);
                 mimamori_sts = MIMAMORI_MONITOR;
-                // break;
             }
-            // }
+            // ------------------------------
+            init_VoicePlay("MUSIC/zunda_05.mp3", 100);
+            play_Voice(MAX_PLAY_TIME);
+            Serial.println("stop: second play_voice()");
+            delay(1000);
+            is_sw();
+            delay(100);
+            if (sw1_sts) {  // reaction(pushed sw1)
+                Serial.println("[mimamori]sw1_sts: pushed");
+                init_VoicePlay("MUSIC/zunda_03.mp3", 100);
+                play_Voice(MAX_PLAY_TIME);
+                Serial.println("stop: second play_voice()");
+                delay(1000);
+                mimamori_sts = MIMAMORI_MONITOR;
+            }
+            // ------------------------------
             break;
             // endloop
         case MIMAMORI_SEND2ELTRES:
@@ -149,7 +187,6 @@ void setup() {
     digitalWrite(LED2, LOW);
     digitalWrite(LED3, LOW);
 
-   
     /* ELTRES: boot_process */
     init_eltres();
 

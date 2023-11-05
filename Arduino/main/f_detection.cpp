@@ -101,7 +101,7 @@ void preview_queue(const QUEUE_T *queue) {
         Serial.print(queue->data[index]);
         index = (index + 1) % MAX_NUM;
     }
-    Serial.println();
+    // Serial.println();
 }
 
 
