@@ -26,6 +26,7 @@ void setup_payload(Payload payload);
  * @param event イベント種別
  */
 void eltres_event_cb(eltres_board_event event) {
+  Serial.print("[eltres]");
   switch (event) {
     case ELTRES_BOARD_EVT_GNSS_TMOUT:
       // GNSS電波受信タイムアウト
@@ -72,18 +73,18 @@ void gga_event_cb(const eltres_board_gga_info *gga_info) {
   /* 測位状態 (GGA情報出力) */
   if (gga_info->m_pos_status) {
     Serial.print("utc: ");
-    Serial.println((const char *)gga_info->m_utc);  // UTC(hhmmss.ss形式)
+    Serial.print((const char *)gga_info->m_utc);  // UTC(hhmmss.ss形式)
     // ----------------------------------------
-    Serial.print("lat: ");
+    Serial.print(", lat: ");
     Serial.print(
       (const char *)gga_info->m_n_s);             // 北緯 / 南緯(N: 北緯, S: 南緯)
     Serial.print((const char *)gga_info->m_lat);  // 緯度(dddmm.mmmm形式)
     Serial.print(", lon: ");
     Serial.print(
       (const char *)gga_info->m_e_w);               // 東経 / 西経(E: 東経, W: 西経)
-    Serial.println((const char *)gga_info->m_lon);  // 経度(dddmm.mmmm形式)
+    Serial.print((const char *)gga_info->m_lon);  // 経度(dddmm.mmmm形式)
     // ----------------------------------------
-    Serial.print("pos_status: ");
+    Serial.print(", pos_status: ");
     Serial.print(gga_info->m_pos_status);
     // GPS 位置品質指標
     //   0: 非測位状態
@@ -91,9 +92,9 @@ void gga_event_cb(const eltres_board_gga_info *gga_info) {
     //   2: 測位状態，かつ DGPS による補正が有効
     //   6: DR (Dead Reckoning)による自律測位
     Serial.print(", sat_used: ");
-    Serial.println(gga_info->m_sat_used);  // 使用衛星数
+    Serial.print(gga_info->m_sat_used);  // 使用衛星数
     // ----------------------------------------
-    Serial.print("hdop: ");
+    Serial.print(", hdop: ");
     Serial.print(gga_info->m_hdop);  // HDOP (水平精度低下度)
     Serial.print(", height: ");
     Serial.print(gga_info->m_height);  // 標高、単位:m
