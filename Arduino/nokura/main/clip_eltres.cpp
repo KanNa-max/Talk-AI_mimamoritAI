@@ -68,7 +68,7 @@ void eltres_event_cb(eltres_board_event event) {
  * @param gga_info GGA情報のポインタ
  */
 void gga_event_cb(const eltres_board_gga_info *gga_info) {
-  Serial.print("[gga]");
+  // Serial.print("[gga]");
   last_gga_info = *gga_info;
   /* 測位状態 (GGA情報出力) */
   if (gga_info->m_pos_status) {
@@ -104,7 +104,7 @@ void gga_event_cb(const eltres_board_gga_info *gga_info) {
   }
   /* 非測位状態 */
   else {
-    Serial.println("invalid data.");
+    // Serial.println("invalid data.");
   }
 }
 

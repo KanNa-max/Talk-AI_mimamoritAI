@@ -156,7 +156,7 @@ void calibration() {
         if (!count_gesture(1)) {
             count++;
         }
-        Serial.print("[calibration] stage1: check your gesture");
+        Serial.print("[calibration] stage1: check your gbackground");
         Serial.print(count);
         Serial.println("/5");
     }
