@@ -1,0 +1,82 @@
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mimaamoritAI</title>
+    </script>
+</head>
+<body>
+    <link rel="stylesheet" href="style.css">
+    <header>
+        <h1>mimamoritAI</h1>
+    </header>
+    <main>
+        <div id="loading" class="blind">
+            <image src="../loading.gif" style="width:90%; height:auto;"/>
+        </div>
+        <div id="failed" class="blind">
+            <div>データ読み込みに失敗しました<br />通信環境を見直してください</div>
+        </div>
+        <div class="flex-row">
+            <div class="flex-col column_left"></div>
+            <div class="flex-row column_right">
+                <div class="flex-col cell-td"></div>
+                <div class="flex-col cell-td"></div>
+                <div class="flex-col cell-td">TODAY</div>
+            </div>
+        </div>
+        <div class="flex-row">
+            <div class="flex-row column_left fig-timeline">0:00</div>
+            <div class="flex-row column_right row-margin">
+                <div id="days0" class="flex-col cell-th">10/28</div>
+                <div id="days1" class="flex-col cell-th cell-th-center">10/29</div>
+                <div id="days2" class="flex-col cell-th">10/30</div>
+            </div>
+        </div>
+        <div class="flex-row fig-height box-margin">
+            <div class="flex-col column_left">
+                <div class="flex-row fig-timeline fig-time4x">6:00</div>
+                <div class="flex-row fig-timeline fig-time4x">12:00</div>
+                <div class="flex-row fig-timeline fig-time4x">18:00</div>
+                <div class="flex-row fig-timeline fig-time4x">24:00</div>
+            </div>
+            <div class="flex-col fig-area column_right">
+                <div class="flex-row fig-border fig-time4x"></div>
+                <div class="flex-row fig-border fig-time4x"></div>
+                <div class="flex-row fig-border fig-time4x"></div>
+                <div id="line-box0" class="line-box">
+                    <div id="sleep-point0_origin" class="sleep-point">!</div>
+                </div>
+                <div id="line-box1" class="line-box">
+                    <div id="sleep-point1_origin" class="sleep-point">!</div>
+                </div>
+                <div id="line-box2" class="line-box">
+                    <div id="sleep-point2_origin" class="sleep-point">!</div>
+                </div>
+            </div>
+        </div>
+        <div class="flex-row">
+            <div class="flex-col column_left"></div>
+            <div class="flex-row column_right">
+                <div class="cell-title cell-td">TOTAL</div>
+            </div>
+        </div>
+        <div class="flex-row box-margin">
+            <div class="flex-col column_left"></div>
+            <div class="flex-row column_right cell-tr">
+                <div id="total0" class="flex-col cell-tc">12:31</div>
+                <div id="total1" class="flex-col cell-tc">11:02</div>
+                <div id="total2" class="flex-col cell-tc">9:23</div>
+            </div>
+        </div>
+        <div class="flex-row bottom-link">
+            <a href="http://192.168.0.118:8080/weekly/page.html">週間データ▶</a>
+        </div>
+    </main>
+    <script>
+        const LOAD_DAYS = 3;
+    </script>
+    <script src="../loaddata.js"></script>
+</body>
+</html>
