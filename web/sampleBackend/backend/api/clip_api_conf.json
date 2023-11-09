@@ -1,13 +1,13 @@
 {
     "debug": true,
-    "device_id": "00010195e4",
-    "api_url": "https://api.clip-viewer-lite.com",
+    "device_id": "#deviceID#",
+    "api_url": "#root_url#",
     "headers": {
-        "X-API-Key": "FPAVhceWjq9zPmrj7UvYl7CSUDKp5V8R1EMZE22e"
+        "X-API-Key": "#APIKey#"
     },
     "body": {
-        "username": "mie.hirayu@gmail.com",
-        "password": "vr2FHtfsaBUuRdv"
+        "username": "hogehoge",
+        "password": "fugafuga"
     },
     "data_selection": {
         "ALL": true,
