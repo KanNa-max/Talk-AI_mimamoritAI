@@ -1,5 +1,21 @@
 # Talk-AI_mimamoritAI
 Hackathon: Development Using the IoT Device Spresense
+**Note:** This README is a work in progress.
+
+
+## Description
+[Include a brief description of your project here.]
+
+## Table of Contents
+- [Project Title](#project-title)
+- [Description](#description)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+
+Written by Hirano
+
 
 このリポジトリは[Sensing Solutionアイデアソン・ハッカソン](https://sensing-solution-hackathon.sonyged.com/)のために作成されました.
 
@@ -27,6 +43,27 @@ Hackathon: Development Using the IoT Device Spresense
 そのため，机に置いて勉強と私達を見守ってしてくれる「専属マネージャー」を提案します．
 
 ### 提案内容
+**実装機能**: 
++ 集中度合い監視システム
+ + ウトウト状態(集中具合)の検出 
+ + 声かけ(対話あり)・アラーム機能 
+ + ジェスチャーでの⼊⼒
++ 休憩奨励システム 
+ + 適宜休憩を促す 
+ + カスタマイズ性あり(アナウンス⾳声を microSD から設定) 
++ 勉強メタバース 
+ + ⾃⾝の頑張った成果を可視化 
+ + 同様に頑張る仲間と成果を共有
+
+**基本動作**:  
+最初に動作確認を⾏い，その後”ウトウト監視状態”，”声掛け”，”アラーム作動”の状態を繰り返す． “ウトウト監視状態”︓ひとみ検出 AI を⽤いて使⽤者が起きているか，寝ているかを推論する． “声掛け”︓任意の⾳声ファイルを再⽣させることができるが，今回は合成⾳声の VOICEVOX による声掛けを⾏う．起きてい ればジェスチャーやボタンを押すといったアクションを⾏い，その後ウトウト監視状態に戻る． “アラーム作動”︓寝ている使⽤者に対して接続したイヤホン/スピーカーへアラームを鳴らす．ボタン/ジェスシャーの⼊⼒で起きた と判断しウトウト監視状態に戻る．SPRESENSE の省電⼒性によって⻑時間の勉強や作業に向いており，モバイルバッテリー を使うことで家だけでなく図書館やカフェなどの外出先でも動作可能である．静かな場所ではイヤホン，ジェスチャーを⽤いること で⾳を出すことなく使⽤できる．
+
+**センシング機能**: 
+本提案において最重要となるウトウト検出には，「Neural Network Console」にて事前学習した CNN モデルで”ひとみ検 出 AI”を作成し，状態(awake/sleep)を推論した． SPRESENSE カメラからの画像データをそのまま⽤いた学習では，モデルサイズが⼤きすぎたため画像をトリミング＆縮⼩処理す ることで学習モデルを⼩さくし，SPRESENSE に搭載可能とした． 動作時には認識エリアを設定し，エリア内でさらに分割した画像に対して処理を⾏うことで，⼩さな瞳を検出することができた． 認識エリアは，使⽤者にわかりやすいように⾚枠で囲っている． また，このデバイスにはジェスチャー認識⽤のモデルも搭載しており，”ひとみ検出 AI”と競合しないよう認識エリアをずらすことでそ れぞれの精度の向上を図った． 
+
+**勉強メタバース**: 
+最近の勉強時間と勉強中の集中度合を, 専⽤ Web ページで確認することができる． MimamoritAI 起動中に時間データ・集中度合データ収集し, ELTRES によりクラウドに 1 分間隔で送信する. 送信されたデ ータはデータ解析ツール”CLIP Viewer Lite”に蓄積され, API を通じて Web ページ上でダッシュボードのように表⽰される.
+
 1. 技術1
 2. 技術2
 3. 技術3
